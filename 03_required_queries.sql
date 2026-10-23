@@ -52,21 +52,25 @@ ORDER BY student_id, grade_rank;
 
 
 
--- QUERY 3: Sort students by courses they are enrolled in
-SELECT DISTINCT
+
+-- QUERY 3: Sort students by the number of courses they are enrolled in
+SELECT
     s.student_id,
     s.first_name,
     s.last_name,
-    c.course_name
+    COUNT(DISTINCT g.course_id) AS enrolled_courses
 FROM Students s
-JOIN Grades g
+LEFT JOIN Grades g
     ON s.student_id = g.student_id
-JOIN Courses c
-    ON g.course_id = c.course_id
-ORDER BY
-    s.last_name,
+GROUP BY
+    s.student_id,
     s.first_name,
-    c.course_name;
+    s.last_name
+ORDER BY
+    enrolled_courses DESC,
+    s.last_name,
+    s.first_name;
+
 
 
 
